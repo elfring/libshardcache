@@ -72,19 +72,19 @@ int shardcache_storage_reset(shardcache_storage_t *st);
  *                        taking part to the shardcache 'cloud'
  * @param num_nodes       The number of nodes present in the nodes list
  * @param storage         A shardcache_storage_t structure holding pointers to the
- *                        storage callbacks.\n If NULL the internal (memory-only)
+ *                        storage callbacks\n If NULL the internal (memory-only)
  *                        volatile storage will be used for all the keys (and not
  *                        only the ones being set with an expiration time)
  * @param secret          A null-terminated string containing the shared secret used to
  *                        authenticate incoming messages
  * @param num_workers     The number of worker threads taking care of serving input connections
- * @param num_async       The number of async i/o threads handling the inter-node communication.\n
+ * @param num_async       The number of async i/o threads handling the inter-node communication\n
  *                        If greater than 0 it will indicate the actual number of async-i/o
- *                        threads to use.\n
+ *                        threads to use\n
  *                        If smaller than 0 (negative) the number of async threads will be calculated
  *                        in function of the number of num_workers (in the actual implemenation 1 extra
- *                        async thread will be created every 20 workers.\n
- *                        If 0 the default value (SHARDCACHE_ASYNC_THREADS_NUM_DEFAULT) will be used.
+ *                        async thread will be created every 20 workers\n
+ *                        If 0 the default value (SHARDCACHE_ASYNC_THREADS_NUM_DEFAULT) will be used
  * @param cache_size      The maximum size of the ARC cache
  * @return a newly initialized shardcache descriptor
  * 
@@ -145,10 +145,10 @@ int shardcache_use_persistent_connections(shardcache_t *cache, int new_value);
  * @brief Allows to force caching of remote items
  *        (as opposed to the default behaviour  of caching only hot items)
  * @param cache       A valid pointer to a shardcache_t structure
- * @param new_value   1 if force_caching is desired, 0 otherwise.\n
+ * @param new_value   1 if force_caching is desired, 0 otherwise\n
  *                    If -1 is provided as new_value, no change will be applied
  *                    but the actual value will still be returned
- *                    (effectively querying the actual status).
+ *                    (effectively querying the actual status)
  * @return the previous value for the force_caching setting
  * @note defaults to 1
  */
@@ -157,10 +157,10 @@ int shardcache_force_caching(shardcache_t *cache, int new_value);
 /*
  * @brief Allows to change the timeout used when creating tcp connections
  * @param cache       A valid pointer to a shardcache_t structure
- * @param new_value   The amount of seconds to use as timeout.
+ * @param new_value   The amount of seconds to use as timeout\n
  *                    If -1 is provided as new_value, no change will be applied
  *                    but the actual value will still be returned
- *                    (effectively querying the actual status).
+ *                    (effectively querying the actual status)
  * @return the previous value for the tcp_timeout setting
  * @note defaults to SHARDCACHE_TCP_TIMEOUT_DEFAULT
  */
@@ -169,10 +169,10 @@ int shardcache_tcp_timeout(shardcache_t *cache, int new_value);
 /*
  * @brief Allows to change the connection pool connection timeout when reusing tcp connections
  * @param cache       A valid pointer to a shardcache_t structure
- * @param new_value   The amount of milliseconds to use as timeout.
+ * @param new_value   The amount of milliseconds to use as timeout\n
  *                    If -1 is provided as new_value, no change will be applied
  *                    but the actual value will still be returned
- *                    (effectively querying the actual status).
+ *                    (effectively querying the actual status)
  * @return the previous value for the tcp_timeout setting
  * @note defaults to SHARDCACHE_CONNECTION_EXPIRE_DEFAULT
  */
@@ -185,10 +185,10 @@ int shardcache_conn_expire_time(shardcache_t *cache, int new_value);
  *        to allow newly added filedescriptors to be included in the
  *        iomux as soon as possible
  * @param cache A valid pointer to a shardcache_t structure
- * @param new_value The amount of microseconds to use as timeout.
+ * @param new_value The amount of microseconds to use as timeout\n
  *                  If -1 is provided as new_value, no change will be applied
  *                  but the actual value will still be returned
- *                  (effectively querying the actual status).
+ *                  (effectively querying the actual status)
  * @return the previous value for the iomux_run_timeout_low setting
  * @note defaults to SHARDCACHE_IOMUX_RUN_TIMEOUT_LOW
  */
@@ -198,10 +198,10 @@ int shardcache_iomux_run_timeout_low(shardcache_t *cache, int new_value);
  * @brief Allows to change the timeout passed to iomux_run()
  *               by the listener and expirer
  * @param cache A valid pointer to a shardcache_t structure
- * @param new_value The amount of microseconds to use as timeout.
+ * @param new_value The amount of microseconds to use as timeout\n
  *                  If -1 is provided as new_value, no change will be applied
  *                  but the actual value will still be returned
- *                  (effectively querying the actual status).
+ *                  (effectively querying the actual status)
  * @return the previous value for the iomux_run_timeout_high setting
  * @note defaults to SHARDCACHE_IOMUX_RUN_TIMEOUT_HIGH
  */
@@ -210,11 +210,11 @@ int shardcache_iomux_run_timeout_high(shardcache_t *cache, int new_value);
 /*
  * @brief Allows to change the expiration time for cached items
  * @param cache A valid pointer to a shardcache_t structure
- * @param new_value The amount of seconds to use as expire time.\n
- *                  If 0 no expiration will be scheduled for cached items;\n
+ * @param new_value The amount of seconds to use as expire time\n
+ *                  If 0 no expiration will be scheduled for cached items\n
  *                  If -1 is provided as new_value, no change will be applied
  *                  but the actual value will still be returned
- *                  (effectively querying the actual status).
+ *                  (effectively querying the actual status)
  * @return the previous value for the expire_time setting
  * @note defaults to SHARDCACHE_IOMUX_EXPIRE_TIME
  */
@@ -233,10 +233,10 @@ int shardcache_serving_look_ahead(shardcache_t *cache, int new_value);
 /*
  * @brief Allows to enable/disable the 'lazy_expiration' mode
  * @param cache       A valid pointer to a shardcache_t structure
- * @param new_value   1 if lazy_expiration is desired, 0 otherwise.\n
+ * @param new_value   1 if lazy_expiration is desired, 0 otherwise\n
  *                    If -1 is provided as new_value, no change will be applied
  *                    but the actual value will still be returned
- *                    (effectively querying the actual status).
+ *                    (effectively querying the actual status)
  * @return the previous value for the lazy_expiration setting
  * @note When lazy expiration is enabled, cached items will be expired
  *       only when fetched, otherwise the expirer thread will take care
@@ -322,7 +322,7 @@ size_t shardcache_get_offset(shardcache_t *cache,
  * @param data        The pointer to the chunk of data
  * @param dlen        The length of the current chunk of data
  * @param total_size  If non zero, it indicates that this is the last chunk and
- *                    tells total size of the data.
+ *                    tells total size of the data
  * @note this argument is set only when the data is completed and we know its
  *       real total size. The callback will not be called anymore once this
  *       parameter has been provided
@@ -362,11 +362,11 @@ typedef int (*shardcache_get_async_callback_t)(void *key,
  *       requested key is already being downloaded (but not complete yet)
  *       In such a case The callback function will be called by the 
  *       thread which is actually downloading the data hence the callback
- *       needs to be thread-safe.
+ *       needs to be thread-safe
  *
  * @note If the data requested is partially downloaded, the available data
  *       will be immediately passed to the callback and the rest will be 
- *       passed while it's being downloaded.
+ *       passed while it's being downloaded
  */
 int shardcache_get_async(shardcache_t *cache,
                          void *key,
@@ -393,11 +393,11 @@ int shardcache_get_async(shardcache_t *cache,
  *       requested key is already being downloaded (but not complete yet)
  *       In such a case The callback function will be called by the 
  *       thread which is actually downloading the data hence the callback
- *       needs to be thread-safe.
+ *       needs to be thread-safe
  *
  * @note If the data requested is partially downloaded, the available data
  *       will be immediately passed to the callback and the rest will be 
- *       passed while it's being downloaded.
+ *       passed while it's being downloaded
  */
 
 int
@@ -484,7 +484,16 @@ int shardcache_set(shardcache_t *cache,
  * @param expire The number of seconds after which the volatile value expires
  *               If 0 the value will not expire and it will be stored using the
  *               actual storage module (which might evntually be a presistent
- *               storage backend as the filesystem or database ones)
+ *                storage backend as the filesystem or database ones)
+ * @param cexpire If not 0 the value will be immediately loaded into the cache and
+ *                set to expire after cexpire number of seconds \n
+ *                If 0 the 'cache_on_set' global runtime option will be used
+ *                to determine if the value should be immediately loaded into the cache
+ *                and the global 'expire_time' runtime option will be used
+ *                once the new value will be eventually loaded into the cache
+ *
+ *                actual storage module (which might evntually be a presistent
+ *                storage backend as the filesystem or database ones)
  * @param if_not_exists If this param is true, the value will be set only
  *                      if there isn't one already stored
  * @param cb     The shardcache_async_response_callback_t which will be
@@ -500,6 +509,7 @@ int shardcache_set_async(shardcache_t *cache,
                          void *value,
                          size_t vlen,
                          time_t expire,
+                         time_t cexpire,
                          int    if_not_exists,
                          shardcache_async_response_callback_t cb,
                          void *priv);
@@ -623,7 +633,7 @@ int shardcache_test_ownership(shardcache_t *cache,
  * @brief Get the index of keys managed by the specific shardcache instance
  *        by querying the storage module
  * @return A pointer to a shardcache_storage_index_t structure holding 
- *         the index.
+ *         the index
  * @note The caller MUST release the returned pointer once done with it
  *       by using the shardcache_free_index() function
  */
@@ -672,22 +682,22 @@ int shardcache_migration_end(shardcache_t *cache);
 
 /**
  * @brief   Notify the internal shardcache core about a new woerker thread which might
- *          access the API.
+ *          access the API\n
  *          This function must be called early within each user-created thread (which is
  *          intended to access the shardcache API at some stage during its lifespan)
- *          to initialize thread-specific variables.
+ *          to initialize thread-specific variables
  * @note    shardcache_thread_end() MUST be esplicitly called before the background thread
- *          exits to avoid memory leakage.
+ *          exits to avoid memory leakage
  */
 void shardcache_thread_init(shardcache_t *cache);
 
 /**
  * @brief   Release the resources allocated by shardcache_thread_init()
  *          This function needs to be called before calling pthread_exit()
- *          to free memory allocated by shardcache_thread_init().
+ *          to free memory allocated by shardcache_thread_init()
  *
- * @note   shardcache_thread_end() is not invoked automatically by the client library.
- *         It must be called explicitly to avoid a memory leak.
+ * @note   shardcache_thread_end() is not invoked automatically by the client library\n
+ *         It must be called explicitly to avoid a memory leak
  */
 void shardcache_thread_end(shardcache_t *cache);
 
