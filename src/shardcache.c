@@ -13,6 +13,7 @@
 #include <fcntl.h>
 #include <limits.h>
 #include <dlfcn.h>
+#include <ctype.h>
 
 #include "shardcache.h"
 #include "shardcache_internal.h"
@@ -852,8 +853,10 @@ shardcache_get_offset(shardcache_t *cache,
     if (offset == 0)
         ATOMIC_INCREMENT(cache->cnt[SHARDCACHE_COUNTER_GETS].value);
 
+
+
     void *obj_ptr = NULL;
-    arc_resource_t res = arc_lookup(cache->arc, (const void *)key, klen, &obj_ptr, 1);
+    arc_resource_t res = arc_lookup(cache->arc, (const void *)key, klen, &obj_ptr, 1, cache->expire_time);
     if (!res) {
         return -1;
     }
@@ -966,7 +969,7 @@ shardcache_get_offset_sync(shardcache_t *cache,
         ATOMIC_INCREMENT(cache->cnt[SHARDCACHE_COUNTER_GETS].value);
 
     void *obj_ptr = NULL;
-    arc_resource_t res = arc_lookup(cache->arc, (const void *)key, klen, &obj_ptr, 0);
+    arc_resource_t res = arc_lookup(cache->arc, (const void *)key, klen, &obj_ptr, 0, cache->expire_time);
     if (!res)
         return 0;
 
@@ -1007,7 +1010,7 @@ shardcache_get(shardcache_t *cache,
     SHC_DEBUG4("Getting value for key: %.*s", klen, key);
 
     void *obj_ptr = NULL;
-    arc_resource_t res = arc_lookup(cache->arc, (const void *)key, klen, &obj_ptr, 1);
+    arc_resource_t res = arc_lookup(cache->arc, (const void *)key, klen, &obj_ptr, 1, cache->expire_time);
     if (!res)
         return -1;
 
@@ -1036,7 +1039,7 @@ shardcache_get(shardcache_t *cache,
         retry_timeout <<= 1;
 
         obj_ptr = NULL;
-        res = arc_lookup(cache->arc, (const void *)key, klen, &obj_ptr, 1);
+        res = arc_lookup(cache->arc, (const void *)key, klen, &obj_ptr, 1, cache->expire_time);
         if (!res)
             return -1;
 
@@ -1231,7 +1234,7 @@ int shardcache_get_multi(shardcache_t *cache,
 {
 
     arc_resource_t *resources = malloc(sizeof(arc_resource_t) * num_keys);
-    int rc = arc_lookup_multi(cache->arc, keys, lens, resources, num_keys);
+    int rc = arc_lookup_multi(cache->arc, keys, lens, resources, num_keys, cache->expire_time);
         
     if (rc != 0) {
         free(resources);
@@ -1455,7 +1458,7 @@ shardcache_touch(shardcache_t *cache, void *key, size_t klen)
     if (is_mine == 1)
     {
         void *obj_ptr = NULL;
-        arc_resource_t res = arc_lookup(cache->arc, (const void *)key, klen, &obj_ptr, 0);
+        arc_resource_t res = arc_lookup(cache->arc, (const void *)key, klen, &obj_ptr, 0, cache->expire_time);
         if (res) {
             cached_object_t *obj = (cached_object_t *)obj_ptr;
             MUTEX_LOCK(&obj->lock);
@@ -1568,7 +1571,7 @@ shardcache_store(shardcache_t *cache,
     rc = cache->storage.store(key, klen, value, vlen, inx, cache->storage.priv);
 
     if (cache->cache_on_set)
-        arc_load(cache->arc, (const void *)key, klen, value, vlen);
+        arc_load(cache->arc, (const void *)key, klen, value, vlen, cexpire);
     else
         arc_remove(cache->arc, (const void *)key, klen);
 
@@ -1813,7 +1816,7 @@ shardcache_set_internal(shardcache_t *cache,
 
         if (rc == 0) {
             if (cache->cache_on_set)
-                arc_load(cache->arc, (const void *)key, klen, value, vlen);
+                arc_load(cache->arc, (const void *)key, klen, value, vlen, cexpire);
             else
                 arc_remove(cache->arc, (const void *)key, klen);
         }
