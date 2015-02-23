@@ -23,13 +23,6 @@
 
 #define DEBUG_DUMP_MAXSIZE 128
 
-#define KEY2STR(__k, __l, __o, __ol) \
-{ \
-    size_t __s = (__l < __ol) ? __l : __ol; \
-    memcpy(__o, __k, __s); \
-    __o[__s] = 0; \
-}
-
 #define LIKELY(__e) __builtin_expect((__e), 1)
 #define UNLIKELY(__e) __builtin_expect((__e), 0)
 
