@@ -584,7 +584,7 @@ int shardcache_cas(shardcache_t *cache,
                    shardcache_async_response_callback_t cb,
                    void *priv);
 
-int64_t
+int
 shardcache_increment(shardcache_t *cache,
                      void *key,
                      size_t klen,
@@ -592,10 +592,11 @@ shardcache_increment(shardcache_t *cache,
                      int64_t initial,
                      time_t expire,
                      time_t cexpire,
+                     int64_t *out,
                      shardcache_async_response_callback_t cb,
                      void *priv);
 
-int64_t
+int
 shardcache_decrement(shardcache_t *cache,
                      void *key,
                      size_t klen,
@@ -603,6 +604,7 @@ shardcache_decrement(shardcache_t *cache,
                      int64_t initial,
                      time_t expire,
                      time_t cexpire,
+                     int64_t *out,
                      shardcache_async_response_callback_t cb,
                      void *priv);
 
