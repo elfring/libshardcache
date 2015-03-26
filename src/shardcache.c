@@ -1138,7 +1138,7 @@ shardcache_get_helper(void *key,
         return -1;
     }
 
-    if (total_size) {
+    if (timestamp) {
         ATOMIC_SET(arg->complete, 1);
         if (timestamp)
             memcpy(&arg->ts, timestamp, sizeof(struct timeval));
